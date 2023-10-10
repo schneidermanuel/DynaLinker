@@ -23,4 +23,9 @@ class Dynalinker
         }
         return Dynalinker::$dynalinker;
     }
+
+    public function LoadEntity()
+    {
+
+    }
 }

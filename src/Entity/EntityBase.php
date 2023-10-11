@@ -22,7 +22,7 @@ class EntityBase
         foreach ($properties as $prop) {
             $attributes = $prop->getAttributes();
             foreach ($attributes as $attribute) {
-                if ($attribute->getName() == "PrimaryKey") {
+                if ($attribute->getName() == PrimaryKey::class) {
                     return $this->GetColumnName($prop);
                 }
             }
@@ -33,11 +33,11 @@ class EntityBase
         $attributes = $property->getAttributes();
         foreach ($attributes as $attribute)
         {
-            if ($attribute->getName() == "Persist")
+            if ($attribute->getName() == Persist::class)
             {
-                return $attribute->getArguments()["columnName"];
+                return $attribute->newInstance()->columnName;
             }
         }
-        throw new MappingException("The property with the name '" . $property->getName() . "' has no persist attribute defined", $property->getName());
+        throw new MappingException("The property with the name '" . $property->getName() . "' has no persist attribute defined", $property->getName(), get_called_class());
     }
 }

@@ -26,7 +26,9 @@ class EntityStore
         $pkColumnName = $this->GetPrimaryKeyColumn();
         $allColumns = $this->GetAttributes();
         $filter = array($pkColumnName => $id);
-        $result = $this->scope->InvokeWithFilter($tableName, $allColumns, $filter);
+        $resultSet = $this->scope->InvokeWithFilter($tableName, $allColumns, $filter);
+        $result = $resultSet[0];
+        return $this->CreateEntity($result);
     }
 
     private function GetTableName()
@@ -40,15 +42,15 @@ class EntityStore
 
     private function GetAttributes()
     {
-        $result = array();
+        $results = array();
         $properties = $this->reflection->getProperties();
         foreach ($properties as $prop) {
             $columnName = $this->GetColumnName($prop);
             if (isset($columnName)) {
-                $result[$prop->name] = $columnName;
+                $results[$prop->name] = $columnName;
             }
         }
-        return $result;
+        return $results;
     }
 
     private function GetPrimaryKeyColumn()
@@ -78,5 +80,19 @@ class EntityStore
             }
         }
         return null;
+    }
+
+    private function CreateEntity($resultSet)
+    {
+        $attributes = $this->GetAttributes();
+        $entityInstance = new $this->className();
+        foreach ($attributes as $property => $column)
+        {
+            if (isset($resultSet[$column]))
+            {
+                $entityInstance->$property = $resultSet[$column];
+            }
+        }
+        return $entityInstance;
     }
 }

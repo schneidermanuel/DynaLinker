@@ -2,15 +2,17 @@
 
 namespace Schneidermanuel\Dynalinker\Core;
 
-use Schneidermanuel\Dynalinker\Exception;
-use Schneidermanuel\Dynalinker\MySQLException;
-use Schneidermanuel\Dynalinker\SetupException;
 use function Schneidermanuel\Dynalinker\stringContains;
 
 class DatabaseConnect
 {
     private $mysql = "";
     private $text = "";
+
+    public function Escape(string $string)
+    {
+        return $this->mysql->real_escape_string($string);
+    }
 
     public function __construct()
     {

@@ -2,19 +2,22 @@
 
 namespace Schneidermanuel\Dynalinker\Generator;
 
+use Schneidermanuel\Dynalinker\Core\DatabaseConnect;
+use Schneidermanuel\Dynalinker\Entity\ScopeInvoker;
+
 class StaticSqlGenerator
 {
 
     private $resultSet;
     private $tableName;
     private $filter;
-    private $mysqli;
-
+    private $db;
     public function __construct()
     {
         $this->resultSet = array();
         $this->filter = array();
-        $this->mysqli = new \mysqli();
+        $this->db = new DatabaseConnect();
+
     }
 
     public function GenerateSingleTableSqlQuery($tableName, $results, $filter)
@@ -37,7 +40,7 @@ class StaticSqlGenerator
             $query = $query . " WHERE ";
             $filterQuery = array();
             foreach ($this->filter as $key => $filter) {
-                $filterQuery[] = $key . " = " . mysqli_real_escape_string($this->mysqli, $filter);
+                $filterQuery[] = $key . " = " . $this->db->Escape($filter);
             }
             $query = $query . join(" AND ", $filterQuery);
         }

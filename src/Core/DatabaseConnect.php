@@ -1,6 +1,11 @@
 <?php
 
-namespace Schneidermanuel\Dynalinker;
+namespace Schneidermanuel\Dynalinker\Core;
+
+use Schneidermanuel\Dynalinker\Exception;
+use Schneidermanuel\Dynalinker\MySQLException;
+use Schneidermanuel\Dynalinker\SetupException;
+use function Schneidermanuel\Dynalinker\stringContains;
 
 class DatabaseConnect
 {
@@ -34,20 +39,9 @@ class DatabaseConnect
         $this->mysql->set_charset("utf8");
     }
 
-    public function query(...$query)
+    public function query($sql)
     {
-        $build = "";
-        foreach ($query as $key => $value) {
-            if ($key == "0") {
-                $build = $value;
-            } else {
-                $to = mysqli_real_escape_string($this->mysql, $value);
-
-                $build = $this->left_replace($build, '%s', $to);
-            }
-        }
-        $this->text = $build;
-        return $this->mysql->query($build);
+        return $this->mysql->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getText()

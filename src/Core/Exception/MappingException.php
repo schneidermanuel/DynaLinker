@@ -1,6 +1,6 @@
 <?php
 
-namespace Schneidermanuel\Dynalinker\Entity;
+namespace Schneidermanuel\Dynalinker\Core\Exception;
 
 class MappingException extends \Exception
 {

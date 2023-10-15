@@ -1,6 +1,6 @@
 <?php
 
-namespace Schneidermanuel\Dynalinker\Entity;
+namespace Schneidermanuel\Dynalinker\Entity\Attribute;
 
 #[\Attribute]
 class Entity

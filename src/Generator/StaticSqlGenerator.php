@@ -40,7 +40,14 @@ class StaticSqlGenerator
             $query = $query . " WHERE ";
             $filterQuery = array();
             foreach ($this->filter as $key => $filter) {
-                $filterQuery[] = $key . " = " . $this->db->Escape($filter);
+                if (is_string($filter))
+                {
+                    $filterQuery[] = $key . " = '" . $this->db->Escape($filter) . "'";
+                }
+                else
+                {
+                    $filterQuery[] = $key . " = " . $this->db->Escape($filter);
+                }
             }
             $query = $query . join(" AND ", $filterQuery);
         }

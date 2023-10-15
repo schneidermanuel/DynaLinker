@@ -31,6 +31,19 @@ class EntityStore
         return $this->CreateEntity($result);
     }
 
+    public function LoadWithFilter($filterEntity)
+    {
+        $tableName = $this->GetTableName();
+        $allColumns = $this->GetAttributes();
+        $filter = $this->BuildFilterFromEntity($filterEntity);
+        $resultSet = $this->scope->InvokeWithFilter($tableName, $allColumns, $filter);
+        $entities = array();
+        foreach ($resultSet as $set) {
+            $entities[] = $this->CreateEntity($set);
+        }
+        return $entities;
+    }
+
     private function GetTableName()
     {
         $attributes = $this->reflection->getAttributes(Entity::class);
@@ -86,13 +99,25 @@ class EntityStore
     {
         $attributes = $this->GetAttributes();
         $entityInstance = new $this->className();
-        foreach ($attributes as $property => $column)
-        {
-            if (isset($resultSet[$column]))
-            {
+        foreach ($attributes as $property => $column) {
+            if (isset($resultSet[$column])) {
                 $entityInstance->$property = $resultSet[$column];
             }
         }
         return $entityInstance;
+    }
+
+    private function BuildFilterFromEntity($filterEntity)
+    {
+        $filter = array();
+        $properties = $this->reflection->getProperties();
+        foreach ($properties as $property) {
+            $propertyValue = $filterEntity->{$property->name};
+            if (isset($propertyValue)) {
+                $columnName = $property->getAttributes(Persist::class)[0]->newInstance()->columnName;
+                $filter[$columnName] = $propertyValue;
+            }
+        }
+        return $filter;
     }
 }

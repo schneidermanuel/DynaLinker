@@ -5,7 +5,6 @@ use Schneidermanuel\Dynalinker\Core\Dynalinker;
 use Schneidermanuel\Dynalinker\Entity\Attribute\Entity;
 use Schneidermanuel\Dynalinker\Entity\Attribute\Persist;
 use Schneidermanuel\Dynalinker\Entity\Attribute\PrimaryKey;
-use Schneidermanuel\Dynalinker\Entity\EntityStore;
 
 #[Entity("user")]
 class TestEntity
@@ -23,4 +22,8 @@ class TestEntity
 $dynalinker = Dynalinker::Get();
 $store = $dynalinker->CreateStore(TestEntity::class);
 $entity = $store->LoadById("1");
+$filter = new TestEntity();
+$filter->name = "manu";
+$newEntity = $store->LoadWithFilter($filter);
 var_dump($entity);
+var_dump($newEntity);

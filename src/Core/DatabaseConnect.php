@@ -45,14 +45,4 @@ class DatabaseConnect
     {
         return $this->mysql->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
-
-    public function getText()
-    {
-        return $this->text;
-    }
-
-    function left_replace($text, $find, $replace)
-    {
-        return implode($replace, explode($find, $text, 2));
-    }
 }

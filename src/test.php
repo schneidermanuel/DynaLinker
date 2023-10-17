@@ -21,9 +21,8 @@ class TestEntity
 
 $dynalinker = Dynalinker::Get();
 $store = $dynalinker->CreateStore(TestEntity::class);
-$entity = $store->LoadById("1");
-$filter = new TestEntity();
-$filter->name = "manu";
-$newEntity = $store->LoadWithFilter($filter);
-var_dump($entity);
-var_dump($newEntity);
+$entity = new TestEntity();
+$entity->name = "Test";
+$entity->hash = "FJAF";
+$id = $store->SaveOrUpdate($entity);
+var_dump($store->LoadById($id));

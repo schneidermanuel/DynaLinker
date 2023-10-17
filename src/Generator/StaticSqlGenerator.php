@@ -12,6 +12,7 @@ class StaticSqlGenerator
     private $tableName;
     private $filter;
     private $db;
+
     public function __construct()
     {
         $this->resultSet = array();
@@ -35,17 +36,13 @@ class StaticSqlGenerator
         $query = "SELECT ";
         $query = $query . join(", ", $this->resultSet);
         $query = $query . " FROM " . $this->tableName;
-        if (count($this->filter) > 0)
-        {
+        if (count($this->filter) > 0) {
             $query = $query . " WHERE ";
             $filterQuery = array();
             foreach ($this->filter as $key => $filter) {
-                if (is_string($filter))
-                {
+                if (is_string($filter)) {
                     $filterQuery[] = $key . " = '" . $this->db->Escape($filter) . "'";
-                }
-                else
-                {
+                } else {
                     $filterQuery[] = $key . " = " . $this->db->Escape($filter);
                 }
             }
@@ -53,5 +50,29 @@ class StaticSqlGenerator
         }
         $query = $query . ";";
         return $query;
+    }
+
+    public function GenerateInsertSqlQuery($tableName, $columns, $entity)
+    {
+        $query = "INSERT INTO " . $tableName . "(";
+        $valuesToInsert = array();
+        foreach ($columns as $property => $column) {
+            if (isset($entity->{$property})) {
+                $valuesToInsert[$column] = $entity->{$property};
+            }
+        }
+        $query = $query . join(", ", array_keys($valuesToInsert));
+        $query = $query . ") VALUES (";
+        $escapedValues = array();
+        foreach ($valuesToInsert as $value) {
+            if (is_string($value)) {
+                $escapedValues[] = "'" . $this->db->Escape($value) . "'";
+            } else {
+                $escapedValues = $this->db->Escape($value);
+            }
+        }
+        $query = $query . join(", ", $escapedValues) . ");";
+        return $query;
+
     }
 }

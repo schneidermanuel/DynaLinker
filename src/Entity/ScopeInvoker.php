@@ -22,4 +22,11 @@ class ScopeInvoker
         $result = $this->db->query($sql);
         return $result;
     }
+
+    public function SaveEntity($entity, $columns, $tableName)
+    {
+        $sql = $this->generator->GenerateInsertSqlQuery($tableName, $columns, $entity);
+        $this->db->execute($sql);
+        return $this->db->query("SELECT LAST_INSERT_ID() as id;")[0]["id"];
+    }
 }

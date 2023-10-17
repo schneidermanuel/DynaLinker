@@ -45,4 +45,9 @@ class DatabaseConnect
     {
         return $this->mysql->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function execute(string $sql)
+    {
+        $this->mysql->query($sql);
+    }
 }

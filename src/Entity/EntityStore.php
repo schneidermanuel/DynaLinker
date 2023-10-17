@@ -29,21 +29,18 @@ class EntityStore
         $this->mapping = array();
         $properties = $this->reflection->getProperties();
         foreach ($properties as $property) {
-           $persistAttribute = $property->getAttributes(Persist::class);
-           if (count($persistAttribute) > 0)
-           {
-               $columnName = $persistAttribute[0]->newInstance()->columnName;
-               $this->mapping[$property->name] = $columnName;
-               $primaryKeyAttribute = $property->getAttributes(PrimaryKey::class);
-               if (count($primaryKeyAttribute) > 0)
-               {
-                   $this->idProperty = $property->name;
-               }
-           }
+            $persistAttribute = $property->getAttributes(Persist::class);
+            if (count($persistAttribute) > 0) {
+                $columnName = $persistAttribute[0]->newInstance()->columnName;
+                $this->mapping[$property->name] = $columnName;
+                $primaryKeyAttribute = $property->getAttributes(PrimaryKey::class);
+                if (count($primaryKeyAttribute) > 0) {
+                    $this->idProperty = $property->name;
+                }
+            }
         }
 
-        if (!isset($this->idProperty))
-        {
+        if (!isset($this->idProperty)) {
             throw new MappingException("No Id Property found on type", null, $this->reflection->name);
         }
 
@@ -69,6 +66,17 @@ class EntityStore
             $entities[] = $this->CreateEntity($set);
         }
         return $entities;
+    }
+
+    public function SaveOrUpdate($entity)
+    {
+        $pkValue = $entity->{$this->idProperty};
+        if (isset($pkValue) && $pkValue != 0) {
+            $this->UpdateEntity($entity);
+            return;
+        }
+        $id = $this->scope->SaveEntity($entity, $this->mapping, $this->GetTableName());
+        return $id;
     }
 
     private function GetTableName()
@@ -104,5 +112,4 @@ class EntityStore
         }
         return $filter;
     }
-
 }

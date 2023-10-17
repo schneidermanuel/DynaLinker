@@ -75,4 +75,31 @@ class StaticSqlGenerator
         return $query;
 
     }
+
+    public function GenerateUpdateSqlQuery($tableName, array $mapping, $entity, $idProperty)
+    {
+        $query = "UPDATE " . $tableName . " SET ";
+        $updateStatements = array();
+        foreach ($mapping as $prop => $column) {
+            if ($prop == $idProperty) {
+                continue;
+            }
+            $propValue = $entity->{$prop};
+            if (is_string($prop) && isset($propValue)) {
+                $updateStatements[] = $column . " = '" . $propValue . "'";
+            } else if (isset($propValue)) {
+                $updateStatements[] = $column . " = " . $propValue;
+            } else {
+                $updateStatements[] = $column . " = null";
+            }
+        }
+        $query = $query . join(", ", $updateStatements) . "WHERE $idProperty = " . $entity->{$idProperty};
+        return $query;
+    }
+
+    public function GenerateDeleteStatement($tableName, $idProperty, $id)
+    {
+        $query = "DELETE FROM " . $tableName . " WHERE " . $idProperty . " = " . $id;
+        return $query;
+    }
 }

@@ -68,12 +68,16 @@ class EntityStore
         return $entities;
     }
 
+    public function DeleteById($id)
+    {
+        $this->scope->DeleteById($id, $this->GetTableName(), $this->mapping[$this->idProperty]);
+    }
     public function SaveOrUpdate($entity)
     {
         $pkValue = $entity->{$this->idProperty};
         if (isset($pkValue) && $pkValue != 0) {
-            $this->UpdateEntity($entity);
-            return;
+            $this->scope->UpdateEntity($entity, $this->mapping, $this->GetTableName(), $this->idProperty);
+            return $pkValue;
         }
         $id = $this->scope->SaveEntity($entity, $this->mapping, $this->GetTableName());
         return $id;

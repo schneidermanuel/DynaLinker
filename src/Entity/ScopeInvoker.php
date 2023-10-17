@@ -29,4 +29,17 @@ class ScopeInvoker
         $this->db->execute($sql);
         return $this->db->query("SELECT LAST_INSERT_ID() as id;")[0]["id"];
     }
+
+    public function UpdateEntity($entity, array $mapping, $tableName, $idProperty)
+    {
+        $sql = $this->generator->GenerateUpdateSqlQuery($tableName, $mapping, $entity, $idProperty);
+        $this->db->execute($sql);
+        return $entity->{$idProperty};
+    }
+
+    public function DeleteById($id, $idProperty, $tableName)
+    {
+        $sql = $this->generator->GenerateDeleteStatement($tableName, $idProperty, $id);
+        $this->db->execute($sql);
+    }
 }

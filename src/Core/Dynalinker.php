@@ -10,6 +10,7 @@ class Dynalinker
 {
     const MAX_PARENT_DIRECTORIES = 8;
     private $dotenv;
+    private array $stores;
 
     private function __construct()
     {
@@ -20,10 +21,15 @@ class Dynalinker
 
     public function CreateStore($entityName)
     {
-        return new EntityStore($entityName);
+        if (array_key_exists($entityName, $this->stores)) {
+            return $this->stores[$entityName];
+        }
+        $newStore = new EntityStore($entityName);
+        $this->stores[$entityName] = $newStore;
+        return $newStore;
     }
 
-    public static function Get() : Dynalinker
+    public static function Get(): Dynalinker
     {
         if (!isset(Dynalinker::$dynalinker)) {
             Dynalinker::$dynalinker = new Dynalinker();

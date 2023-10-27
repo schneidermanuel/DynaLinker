@@ -61,6 +61,6 @@ class Dynalinker
 
     public function Run()
     {
-        $this->callMapper->MapCall($_SERVER["REQUEST_URI"]);
+        $this->callMapper->MapCall(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH));
     }
 }

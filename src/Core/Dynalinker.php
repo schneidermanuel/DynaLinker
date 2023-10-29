@@ -16,6 +16,7 @@ class Dynalinker
 
     private function __construct()
     {
+        $this->stores = array();
         $this->InstantiateDotEnv();
         if ($_ENV["RUN_TYPE"] == "DEBUG") {
             ini_set('display_errors', 1);

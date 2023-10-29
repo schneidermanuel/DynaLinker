@@ -17,6 +17,11 @@ class Dynalinker
     private function __construct()
     {
         $this->InstantiateDotEnv();
+        if ($_ENV["RUN_TYPE"] == "DEBUG") {
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+        }
         $this->callMapper = new CallMapper();
     }
 

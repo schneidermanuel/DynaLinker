@@ -52,6 +52,10 @@ class EntityStore
         $pkColumnName = $this->mapping[$this->idProperty];
         $filter = array($pkColumnName => $id);
         $resultSet = $this->scope->InvokeWithFilter($tableName, $this->mapping, $filter);
+        if (count($resultSet))
+        {
+            return null;
+        }
         $result = $resultSet[0];
         return $this->CreateEntity($result);
     }

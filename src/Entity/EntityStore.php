@@ -52,7 +52,7 @@ class EntityStore
         $pkColumnName = $this->mapping[$this->idProperty];
         $filter = array($pkColumnName => $id);
         $resultSet = $this->scope->InvokeWithFilter($tableName, $this->mapping, $filter);
-        if (count($resultSet))
+        if (count($resultSet) == 0)
         {
             return null;
         }

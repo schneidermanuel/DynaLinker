@@ -68,7 +68,7 @@ class StaticSqlGenerator
             if (is_string($value)) {
                 $escapedValues[] = "'" . $this->db->Escape($value) . "'";
             } else {
-                $escapedValues = $this->db->Escape($value);
+                $escapedValues[] = $this->db->Escape($value);
             }
         }
         $query = $query . join(", ", $escapedValues) . ");";

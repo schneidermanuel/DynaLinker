@@ -74,7 +74,7 @@ class EntityStore
 
     public function DeleteById($id)
     {
-        $this->scope->DeleteById($id, $this->GetTableName(), $this->mapping[$this->idProperty]);
+        $this->scope->DeleteById($id, $this->mapping[$this->idProperty], $this->GetTableName());
     }
     public function SaveOrUpdate($entity)
     {

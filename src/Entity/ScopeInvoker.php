@@ -13,7 +13,7 @@ class ScopeInvoker
     public function __construct()
     {
         $this->generator = new StaticSqlGenerator();
-        $this->db = new DatabaseConnect();
+        $this->db = DatabaseConnect::Get();
     }
 
     public function InvokeWithFilter($tableName, $results, $filter)

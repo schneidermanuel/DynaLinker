@@ -14,7 +14,18 @@ class DatabaseConnect
         return $this->mysql->real_escape_string($string);
     }
 
-    public function __construct()
+    private static $instance;
+
+    public static function Get()
+    {
+        if (isset(self::$instance)) {
+            return self::$instance;
+        }
+        self::$instance = new DatabaseConnect();
+        return self::$instance;
+    }
+
+    private function __construct()
     {
         global $config;
         $mysql_auth = array();

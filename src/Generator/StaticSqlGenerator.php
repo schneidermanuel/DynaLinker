@@ -17,7 +17,7 @@ class StaticSqlGenerator
     {
         $this->resultSet = array();
         $this->filter = array();
-        $this->db = new DatabaseConnect();
+        $this->db = DatabaseConnect::Get();
 
     }
 

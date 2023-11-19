@@ -80,7 +80,7 @@ class EntityStore
     {
         $pkValue = $entity->{$this->idProperty};
         if (isset($pkValue) && $pkValue != 0) {
-            $this->scope->UpdateEntity($entity, $this->mapping, $this->GetTableName(), $this->mapping[$this->idProperty]);
+            $this->scope->UpdateEntity($entity, $this->mapping, $this->GetTableName(), $this->idProperty);
             return $pkValue;
         }
         $id = $this->scope->SaveEntity($entity, $this->mapping, $this->GetTableName());

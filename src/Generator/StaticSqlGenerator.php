@@ -93,7 +93,7 @@ class StaticSqlGenerator
                 $updateStatements[] = $column . " = null";
             }
         }
-        $query = $query . join(", ", $updateStatements) . "WHERE $idProperty = " . $entity->{$idProperty};
+        $query = $query . join(", ", $updateStatements) . "WHERE $mapping[$idProperty] = " . $entity->{$idProperty};
         return $query;
     }
 

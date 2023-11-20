@@ -52,8 +52,7 @@ class EntityStore
         $pkColumnName = $this->mapping[$this->idProperty];
         $filter = array($pkColumnName => $id);
         $resultSet = $this->scope->InvokeWithFilter($tableName, $this->mapping, $filter);
-        if (count($resultSet) == 0)
-        {
+        if (count($resultSet) == 0) {
             return null;
         }
         $result = $resultSet[0];
@@ -76,6 +75,7 @@ class EntityStore
     {
         $this->scope->DeleteById($id, $this->mapping[$this->idProperty], $this->GetTableName());
     }
+
     public function SaveOrUpdate($entity)
     {
         $pkValue = $entity->{$this->idProperty};
@@ -85,6 +85,13 @@ class EntityStore
         }
         $id = $this->scope->SaveEntity($entity, $this->mapping, $this->GetTableName());
         return $id;
+    }
+
+    public function CustomQuery($sql)
+    {
+        $result = $this->scope->LoadWithQuery($sql);
+        return $this->CreateEntity($result);
+
     }
 
     private function GetTableName()

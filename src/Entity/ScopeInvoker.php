@@ -42,4 +42,10 @@ class ScopeInvoker
         $sql = $this->generator->GenerateDeleteStatement($tableName, $idProperty, $id);
         $this->db->execute($sql);
     }
+
+    public function LoadWithQuery($sql)
+    {
+        $result = $this->db->query($sql);
+        return $result;
+    }
 }

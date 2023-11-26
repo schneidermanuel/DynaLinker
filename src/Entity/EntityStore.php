@@ -89,8 +89,12 @@ class EntityStore
 
     public function CustomQuery($sql)
     {
-        $result = $this->scope->LoadWithQuery($sql);
-        return $this->CreateEntity($result);
+        $resultSet = $this->scope->LoadWithQuery($sql);
+        $entities = array();
+        foreach ($resultSet as $set) {
+            $entities[] = $this->CreateEntity($set);
+        }
+        return $entities;
 
     }
 

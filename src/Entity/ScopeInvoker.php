@@ -45,7 +45,11 @@ class ScopeInvoker
 
     public function LoadWithQuery($sql)
     {
-        $result = $this->db->query($sql);
-        return $result;
+        $resultSet = $this->db->query($sql);
+        $entities = array();
+        foreach ($resultSet as $set) {
+            $entities[] = $this->CreateEntity($set);
+        }
+        return $entities;
     }
 }

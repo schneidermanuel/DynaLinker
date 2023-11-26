@@ -13,6 +13,7 @@ class Dynalinker
     private $dotenv;
     private array $stores;
     private $callMapper;
+    private $db;
 
     private function __construct()
     {
@@ -24,6 +25,7 @@ class Dynalinker
             error_reporting(E_ALL);
         }
         $this->callMapper = new CallMapper();
+        $this->db = DatabaseConnect::Get();
     }
 
     private static $dynalinker;
@@ -68,5 +70,10 @@ class Dynalinker
     public function Run()
     {
         $this->callMapper->MapCall(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH));
+    }
+
+    public function Query($sql): array
+    {
+        return $this->db->query($sql);
     }
 }

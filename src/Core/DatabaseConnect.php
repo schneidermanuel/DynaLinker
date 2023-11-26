@@ -52,7 +52,7 @@ class DatabaseConnect
         $this->mysql->set_charset("utf8");
     }
 
-    public function query($sql)
+    public function query($sql): array
     {
         return $this->mysql->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
